@@ -1,10 +1,42 @@
 part of 'game_bloc.dart';
 
-abstract class GameState extends Equatable {
-  const GameState();
-  
-  @override
-  List<Object> get props => [];
-}
+class GameState extends Equatable {
+  final int scoreA;
+  final int scoreB;
+  final bool isFrost;
+  final bool isFog;
+  final bool isRain;
 
-class GameInitial extends GameState {}
+  const GameState({
+    this.scoreA = 0,
+    this.scoreB = 0,
+    this.isFrost = false,
+    this.isFog = false,
+    this.isRain = false,
+  });
+
+  @override
+  List<Object> get props => [
+        scoreA,
+        scoreB,
+        isFrost,
+        isFog,
+        isRain,
+      ];
+
+  GameState copyWith({
+    int? scoreA,
+    int? scoreB,
+    bool? isFrost,
+    bool? isFog,
+    bool? isRain,
+  }) {
+    return GameState(
+      scoreA: scoreA ?? this.scoreA,
+      scoreB: scoreB ?? this.scoreB,
+      isFrost: isFrost ?? this.isFrost,
+      isFog: isFog ?? this.isFog,
+      isRain: isRain ?? this.isRain,
+    );
+  }
+}

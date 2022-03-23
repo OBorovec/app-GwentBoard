@@ -6,3 +6,23 @@ abstract class GameEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class UpdateScoreA extends GameEvent {
+  final int newScore;
+  const UpdateScoreA({
+    required this.newScore,
+  });
+}
+
+class UpdateScoreB extends GameEvent {
+  final int newScore;
+  const UpdateScoreB({
+    required this.newScore,
+  });
+}
+
+class ToggleFrostWeather extends GameEvent {}
+
+class ToggleFogWeather extends GameEvent {}
+
+class ToggleRainWeather extends GameEvent {}

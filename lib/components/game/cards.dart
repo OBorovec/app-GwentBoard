@@ -54,7 +54,7 @@ class BoardCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(4.0),
+      padding: EdgeInsets.all(BoardDims.cardPadding),
       child: Container(
         width: BoardDims.cardWidth,
         height: BoardDims.cardHeight,
@@ -80,6 +80,14 @@ class BoardCard extends StatelessWidget {
                 style: TextStyle(color: _cardValueColor()),
               ),
             ),
+            if (data.activeValue != null && data.activeValue != data.baseValue)
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  data.baseValue.toString(),
+                  style: Theme.of(context).textTheme.overline,
+                ),
+              ),
             Align(
               alignment: Alignment.bottomRight,
               child: _buildCardIcon(context),

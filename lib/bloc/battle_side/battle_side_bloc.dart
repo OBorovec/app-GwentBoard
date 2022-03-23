@@ -20,6 +20,9 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     on<ToggleFrontlineWeather>(_toggleFrontlineWeather);
     on<ToggleBacklineWeather>(_toggleBacklineWeather);
     on<ToggleArtylineWeather>(_toggleArtylineWeather);
+    on<SetFrontlineWeather>(_setFrontlineWeather);
+    on<SetBacklineWeather>(_setBacklineWeather);
+    on<SetArtylineWeather>(_tsetArtylineWeather);
     on<ToggleFrontlineMorale>(_toggleFrontlineMorale);
     on<ToggleBacklineMorale>(_toggleBacklineMorale);
     on<ToggleArtylineMorale>(_toggleArtylineMorale);
@@ -36,7 +39,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
             activeValue: _battleLineCardValue(
               data,
               state.frontlineCards
-                  .where((CardData other) => data.initTime != other.initTime)
+                  .where((CardData other) => data != other)
                   .toList(),
               state.frontlineWeather,
               state.frontlineMorale,
@@ -51,7 +54,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
             activeValue: _battleLineCardValue(
               data,
               state.backlineCards
-                  .where((CardData other) => data.initTime != other.initTime)
+                  .where((CardData other) => data != other)
                   .toList(),
               state.backlineWeather,
               state.backlineMorale,
@@ -66,7 +69,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
             activeValue: _battleLineCardValue(
               data,
               state.artylineCards
-                  .where((CardData other) => data.initTime != other.initTime)
+                  .where((CardData other) => data != other)
                   .toList(),
               state.artylineWeather,
               state.artylineMorale,
@@ -100,6 +103,16 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     if (activeWeather) {
       value = 1;
     }
+    // Brother cards affect
+    if (card.attBrothers) {
+      int brothers = 1;
+      for (CardData otherCard in otherCards) {
+        if (otherCard.attBrothers && card.baseValue == otherCard.baseValue) {
+          brothers += 1;
+        }
+      }
+      value *= brothers;
+    }
     // Support cards affect
     for (CardData otherCard in otherCards) {
       if (otherCard.attSupport) {
@@ -112,26 +125,21 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
         value += 2;
       }
     }
-    // Brother cards affect
-    if (card.attBrothers) {
-      for (CardData otherCard in otherCards) {
-        int brothers = 1;
-        if (otherCard.attBrothers && card.baseValue == otherCard.baseValue) {
-          brothers += 1;
-        }
-        value *= brothers;
-      }
-    }
     // Moral cards affect
+    // Moral can be applied only once
+    bool applyMoral = false;
+    if (activeMorale) {
+      applyMoral = true;
+    }
     for (CardData otherCard in otherCards) {
       if (otherCard.attMoral) {
-        value *= 2;
+        applyMoral = true;
       }
     }
-    // Moral affect
-    if (activeMorale) {
+    if (applyMoral) {
       value *= 2;
     }
+
     return value;
   }
 
@@ -243,6 +251,30 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     Emitter<BattleSideState> emit,
   ) {
     emit(state.copyWith(artylineWeather: !state.artylineWeather));
+    add(CalculateScore());
+  }
+
+  FutureOr<void> _setFrontlineWeather(
+    SetFrontlineWeather event,
+    Emitter<BattleSideState> emit,
+  ) {
+    emit(state.copyWith(frontlineWeather: event.value));
+    add(CalculateScore());
+  }
+
+  FutureOr<void> _setBacklineWeather(
+    SetBacklineWeather event,
+    Emitter<BattleSideState> emit,
+  ) {
+    emit(state.copyWith(backlineWeather: event.value));
+    add(CalculateScore());
+  }
+
+  FutureOr<void> _tsetArtylineWeather(
+    SetArtylineWeather event,
+    Emitter<BattleSideState> emit,
+  ) {
+    emit(state.copyWith(artylineWeather: event.value));
     add(CalculateScore());
   }
 

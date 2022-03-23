@@ -14,3 +14,13 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Resources
+
+### Icons
+
+- [cards](https://www.flaticon.com/premium-icon/cards_867505)
+- [sword](https://www.flaticon.com/free-icon/sword_842184)
+- [bow](https://www.flaticon.com/free-icon/bow_811994)
+- [catapult](https://www.flaticon.com/premium-icon/catapult_2350625)
+- [scull](https://icon-library.com/icon/scull-icon-20.html)

@@ -36,16 +36,18 @@ class _RootPageState extends State<RootPage> {
                 alignment: Alignment.center,
                 children: [
                   ActionButton(
-                    onPressed: () => print('test'),
-                    icon: const Icon(Icons.exit_to_app),
-                  ),
-                  ActionButton(
-                    onPressed: () => print('test'),
-                    icon: const Icon(Icons.exit_to_app),
-                  ),
-                  ActionButton(
-                    onPressed: () => print('test'),
+                    onPressed: () =>
+                        Toasting.notifyToast(context, "Not implemented yet..."),
                     icon: const Icon(Icons.info),
+                  ),
+                  ActionButton(
+                    onPressed: () =>
+                        Toasting.notifyToast(context, "Not implemented yet..."),
+                    icon: const Icon(Icons.settings),
+                  ),
+                  ActionButton(
+                    onPressed: () => exit(0),
+                    icon: const Icon(Icons.exit_to_app),
                   ),
                 ],
               ),

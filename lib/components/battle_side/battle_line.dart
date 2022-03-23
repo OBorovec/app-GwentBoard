@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:gwent_board/components/battle_side/card_line.dart';
 import 'package:gwent_board/components/battle_side/moral_icon_switch.dart';
-import 'package:gwent_board/components/game/weather_icon_switch.dart';
+import 'package:gwent_board/components/battle_side/weather_icon_switch.dart';
 
 abstract class BattleLine extends StatelessWidget {
   final MoralIconSwitch moralSwitch;
   final CardLine cardLine;
   final WeatherIconSwitch weatherSwitch;
 
+  final bool showWeather;
+
   const BattleLine({
     Key? key,
     required this.moralSwitch,
     required this.cardLine,
     required this.weatherSwitch,
+    this.showWeather = false,
   }) : super(key: key);
 
   @override
@@ -23,41 +26,56 @@ abstract class BattleLine extends StatelessWidget {
         Expanded(
           child: cardLine,
         ),
-        weatherSwitch,
+        if (showWeather) weatherSwitch,
       ],
     );
   }
 }
 
 class FrontLine extends BattleLine {
-  const FrontLine({
+  FrontLine({
     Key? key,
+    bool allowWeatherControl = false,
+    bool showWeather = false,
   }) : super(
           key: key,
           moralSwitch: const FrontMoralIconSwitch(),
           cardLine: const FrontCardLine(),
-          weatherSwitch: const SnowWeatherIconSwitch(),
+          weatherSwitch: SnowWeatherIconSwitch(
+            allowConrol: allowWeatherControl,
+          ),
+          showWeather: showWeather,
         );
 }
 
 class BackLine extends BattleLine {
-  const BackLine({
+  BackLine({
     Key? key,
+    bool allowWeatherControl = false,
+    bool showWeather = false,
   }) : super(
           key: key,
           moralSwitch: const BackMoralIconSwitch(),
           cardLine: const BackCardLine(),
-          weatherSwitch: const FogWeatherIconSwitch(),
+          weatherSwitch: FogWeatherIconSwitch(
+            allowConrol: allowWeatherControl,
+          ),
+          showWeather: showWeather,
         );
 }
 
 class ArtyLine extends BattleLine {
-  const ArtyLine({
+  ArtyLine({
     Key? key,
+    bool allowWeatherControl = false,
+    bool showWeather = false,
   }) : super(
           key: key,
           moralSwitch: const ArtyMoralIconSwitch(),
           cardLine: const ArtyCardLine(),
-          weatherSwitch: const RainWeatherIconSwitch(),
+          weatherSwitch: RainWeatherIconSwitch(
+            allowConrol: allowWeatherControl,
+          ),
+          showWeather: showWeather,
         );
 }

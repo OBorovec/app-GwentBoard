@@ -14,7 +14,9 @@ abstract class CardLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(minHeight: BoardDims.minCardLineHeight),
+      constraints: BoxConstraints(
+        minHeight: BoardDims.cardHeight + 2 * BoardDims.cardPadding,
+      ),
       decoration: BoxDecoration(
         color: BoardColors.cardLineBackground,
         borderRadius: const BorderRadius.all(

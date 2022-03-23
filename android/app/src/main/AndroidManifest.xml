@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cz.oborovec.gc.gwent_board">
    <application
-        android:label="gwent_board"
+        android:label="Gwent board"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

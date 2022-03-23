@@ -1,32 +1,28 @@
 import 'package:flutter/material.dart';
 
-class SidePage extends StatefulWidget {
+class BoardBasePage extends StatefulWidget {
   final Widget body;
   final List<IconButton> actionButtons;
 
-  const SidePage({
+  const BoardBasePage({
     Key? key,
     required this.body,
     this.actionButtons = const <IconButton>[],
   }) : super(key: key);
 
   @override
-  State<SidePage> createState() => _SidePageState();
+  State<BoardBasePage> createState() => _BoardBasePageState();
 }
 
-class _SidePageState extends State<SidePage> {
+class _BoardBasePageState extends State<BoardBasePage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        Navigator.of(context).pop();
-        return true;
-      },
-      // onWillPop: () => _onWillPop(),
+      onWillPop: _onWillPop,
       child: Scaffold(
         appBar: null,
         body: widget.body,
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.small(
           onPressed: () {
             _onWillPop().then((value) {
               if (value) Navigator.of(context).pop();
@@ -36,7 +32,7 @@ class _SidePageState extends State<SidePage> {
           heroTag: 'menu_tag',
         ),
         floatingActionButtonLocation:
-            FloatingActionButtonLocation.miniCenterFloat,
+            FloatingActionButtonLocation.miniEndDocked,
       ),
     );
   }

@@ -64,6 +64,27 @@ class ToggleBacklineWeather extends BattleSideEvent {}
 
 class ToggleArtylineWeather extends BattleSideEvent {}
 
+class SetFrontlineWeather extends BattleSideEvent {
+  final bool value;
+  const SetFrontlineWeather({
+    required this.value,
+  });
+}
+
+class SetBacklineWeather extends BattleSideEvent {
+  final bool value;
+  const SetBacklineWeather({
+    required this.value,
+  });
+}
+
+class SetArtylineWeather extends BattleSideEvent {
+  final bool value;
+  const SetArtylineWeather({
+    required this.value,
+  });
+}
+
 class ToggleFrontlineMorale extends BattleSideEvent {}
 
 class ToggleBacklineMorale extends BattleSideEvent {}

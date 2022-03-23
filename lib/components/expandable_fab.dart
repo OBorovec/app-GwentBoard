@@ -68,10 +68,6 @@ class _ExpandableFabState extends State<ExpandableFab>
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Make it more general
-    // Without SizedBox ActionButtons are not clickable
-    // and are rendered behind Scaffold.
-
     return SizedBox(
       height: 2 * ExpandableFab.maxDistance,
       width: 2 * ExpandableFab.maxDistance,
@@ -80,7 +76,7 @@ class _ExpandableFabState extends State<ExpandableFab>
         clipBehavior: Clip.none,
         children: [
           _buildTapToCloseFab(),
-          ..._buildExpandingActionButtons(),
+          ..._buildExpandingActionButtons(widget.alignment),
           _buildTapToOpenFab(),
         ],
       ),
@@ -111,12 +107,40 @@ class _ExpandableFabState extends State<ExpandableFab>
     );
   }
 
-  List<Widget> _buildExpandingActionButtons() {
-    // TODO: Make the angles come from Alignment
+  List<Widget> _buildExpandingActionButtons(Alignment alignment) {
     final children = <Widget>[];
     final count = widget.children.length;
-    final step = 90.0 / (count - 1);
-    for (var i = 0, angleInDegrees = 0.0;
+    late final double step;
+    late final double initAngle;
+    late final Offset offsetRoot;
+    if (alignment == Alignment.center) {
+      step = 360 / count;
+      initAngle = 0;
+      offsetRoot = const Offset(
+        ExpandableFab.maxDistance - 33,
+        ExpandableFab.maxDistance - 24,
+      );
+    } else if (alignment == Alignment.centerRight) {
+      step = 180 / (count - 1);
+      initAngle = 270;
+      offsetRoot = const Offset(0, ExpandableFab.maxDistance - 24);
+    } else if (alignment == Alignment.centerLeft) {
+      step = 180 / (count - 1);
+      initAngle = 90;
+      offsetRoot = const Offset(
+        2 * ExpandableFab.maxDistance - 66,
+        ExpandableFab.maxDistance - 24,
+      );
+    } else if (alignment == Alignment.bottomCenter) {
+      step = 180 / (count - 1);
+      initAngle = 0;
+      offsetRoot = const Offset(ExpandableFab.maxDistance - 24, 0);
+    } else {
+      step = 90.0 / (count - 1);
+      initAngle = 0;
+      offsetRoot = const Offset(0, 0);
+    }
+    for (var i = 0, angleInDegrees = initAngle;
         i < count;
         i++, angleInDegrees += step) {
       children.add(
@@ -125,21 +149,11 @@ class _ExpandableFabState extends State<ExpandableFab>
           maxDistance: widget.distance,
           progress: _expandAnimation,
           child: widget.children[i],
-          alignmentOffset: _getAlignmentOffset(),
+          alignmentOffset: offsetRoot,
         ),
       );
     }
     return children;
-  }
-
-  Offset _getAlignmentOffset() {
-    if (widget.alignment == Alignment.center) {
-      return const Offset(
-        ExpandableFab.maxDistance,
-        ExpandableFab.maxDistance,
-      );
-    }
-    return const Offset(0, 0);
   }
 
   Widget _buildTapToOpenFab() {
@@ -196,8 +210,8 @@ class _ExpandingActionButton extends StatelessWidget {
           progress.value * maxDistance,
         );
         return Positioned(
-          right: -24 + offset.dx + alignmentOffset.dx,
-          bottom: -24 + offset.dy + alignmentOffset.dy,
+          right: 4 + offset.dx + alignmentOffset.dx,
+          bottom: 4 + offset.dy + alignmentOffset.dy,
           child: Transform.rotate(
             angle: (1.0 - progress.value) * math.pi / 2,
             child: child!,
@@ -231,7 +245,7 @@ class ActionButton extends StatelessWidget {
       color: Theme.of(context).colorScheme.secondary,
       elevation: 4.0,
       child: IconButton(
-        onPressed: () => onPressed,
+        onPressed: onPressed,
         icon: icon,
         color: Theme.of(context).colorScheme.onSecondary,
       ),
