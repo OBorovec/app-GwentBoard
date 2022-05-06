@@ -24,3 +24,4 @@ samples, guidance on mobile development, and a full API reference.
 - [bow](https://www.flaticon.com/free-icon/bow_811994)
 - [catapult](https://www.flaticon.com/premium-icon/catapult_2350625)
 - [scull](https://icon-library.com/icon/scull-icon-20.html)
+- [horn](https://www.flaticon.com/premium-icon/horn_2222887?related_id=2222887&origin=search)

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gwent_board/components/_page/root_page.dart';
-import 'package:gwent_board/constants/colors.dart';
+import 'package:gwent_board/components/expandable_fab.dart';
 import 'package:gwent_board/route_generator.dart';
 
 class HomePage extends StatelessWidget {
@@ -15,22 +15,36 @@ class HomePage extends StatelessWidget {
             child: AppBoardOption(
               label: 'Full board',
               background: Theme.of(context).primaryColorLight,
-              onTap: () {
-                Navigator.pushNamed(context, RoutePaths.fullBoard);
-              },
+              onTap: () => Navigator.pushNamed(context, RoutePaths.fullBoard),
             ),
           ),
           Expanded(
             child: AppBoardOption(
               label: 'Half board',
               background: Theme.of(context).primaryColorDark,
-              onTap: () {
-                Navigator.pushNamed(context, RoutePaths.singleBoard);
-              },
+              onTap: () => Navigator.pushNamed(context, RoutePaths.singleBoard),
             ),
           ),
         ],
       ),
+      actionButtons: [
+        ActionButton(
+          onPressed: () => Navigator.pushNamed(context, RoutePaths.info),
+          icon: const Icon(Icons.info),
+        ),
+        // ActionButton(
+        //   onPressed: () => Navigator.pushNamed(context, RoutePaths.packs),
+        //   icon: const Icon(Icons.card_membership),
+        // ),
+        // ActionButton(
+        //   onPressed: () => Navigator.pushNamed(context, RoutePaths.capture),
+        //   icon: const Icon(Icons.camera),
+        // ),
+        // ActionButton(
+        //   onPressed: () => Navigator.pushNamed(context, RoutePaths.settings),
+        //   icon: const Icon(Icons.settings),
+        // )
+      ],
     );
   }
 }

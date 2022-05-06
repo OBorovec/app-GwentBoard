@@ -7,19 +7,12 @@ class PackContol extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Row(
-          children: [
-            MoralIconSwitch(),
-            SupportIconSwitch(),
-          ],
-        ),
-        Row(
-          children: [
-            BrotherIconSwitch(),
-            DoubleSupportIconSwitch(),
-          ],
-        ),
+        MoralIconSwitch(),
+        SupportIconSwitch(),
+        BrotherIconSwitch(),
+        DoubleSupportIconSwitch(),
       ],
     );
   }

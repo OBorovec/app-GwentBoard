@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-class BoardBasePage extends StatefulWidget {
+class PopFltBtnPage extends StatefulWidget {
   final Widget body;
   final List<IconButton> actionButtons;
 
-  const BoardBasePage({
+  const PopFltBtnPage({
     Key? key,
     required this.body,
     this.actionButtons = const <IconButton>[],
   }) : super(key: key);
 
   @override
-  State<BoardBasePage> createState() => _BoardBasePageState();
+  State<PopFltBtnPage> createState() => _PopFltBtnPageState();
 }
 
-class _BoardBasePageState extends State<BoardBasePage> {
+class _PopFltBtnPageState extends State<PopFltBtnPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -31,8 +31,7 @@ class _BoardBasePageState extends State<BoardBasePage> {
           child: const Icon(Icons.cancel),
           heroTag: 'menu_tag',
         ),
-        floatingActionButtonLocation:
-            FloatingActionButtonLocation.miniEndDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
       ),
     );
   }

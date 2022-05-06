@@ -1,29 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gwent_board/bloc/battle_side/battle_side_bloc.dart';
+import 'package:gwent_board/bloc/game/game_bloc.dart';
 import 'package:weather_icons/weather_icons.dart';
 
+class GameWeatherControl extends StatelessWidget {
+  const GameWeatherControl({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: const [
+        FrostWeatherSwitch(),
+        FogWeatherSwitch(),
+        RainWeatherSwitch(),
+      ],
+    );
+  }
+}
+
 abstract class WeatherIconSwitch extends StatelessWidget {
-  final bool allowConrol;
   final String weatherIconOn;
   final String weatherIconOff;
   final double size;
-  final EdgeInsetsGeometry? padding;
-  final BoxConstraints? constraints;
 
   const WeatherIconSwitch({
     Key? key,
-    this.allowConrol = false,
     required this.weatherIconOn,
     required this.weatherIconOff,
     this.size = 40,
-    this.padding,
-    this.constraints,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BattleSideBloc, BattleSideState>(
+    return BlocBuilder<GameBloc, GameState>(
       builder: (context, state) {
         final bool isOn = _getIsOn(state);
         List<Widget> weatherIcons = [
@@ -33,11 +43,11 @@ abstract class WeatherIconSwitch extends StatelessWidget {
         if (isOn) weatherIcons = weatherIcons.reversed.toList();
         return InkWell(
           onTap: () {
-            if (allowConrol) _onTap(context);
+            _onTap(context);
           },
           child: SizedBox(
-            height: 50,
-            width: 30,
+            height: size,
+            width: 50,
             child: Stack(
               children: weatherIcons,
             ),
@@ -60,73 +70,67 @@ abstract class WeatherIconSwitch extends StatelessWidget {
     );
   }
 
-  bool _getIsOn(BattleSideState state);
+  bool _getIsOn(GameState state);
 
   void _onTap(BuildContext context);
 }
 
-class SnowWeatherIconSwitch extends WeatherIconSwitch {
-  const SnowWeatherIconSwitch({
+class FrostWeatherSwitch extends WeatherIconSwitch {
+  const FrostWeatherSwitch({
     Key? key,
-    bool allowConrol = false,
   }) : super(
           key: key,
-          allowConrol: allowConrol,
           weatherIconOn: 'wi-snow',
           weatherIconOff: 'wi-day-sunny',
         );
 
   @override
-  bool _getIsOn(BattleSideState state) {
-    return state.frontlineWeather;
+  bool _getIsOn(GameState state) {
+    return state.isFrost;
   }
 
   @override
   void _onTap(BuildContext context) {
-    BlocProvider.of<BattleSideBloc>(context).add(ToggleFrontlineWeather());
+    BlocProvider.of<GameBloc>(context).add(ToggleFrostWeather());
   }
 }
 
-class FogWeatherIconSwitch extends WeatherIconSwitch {
-  const FogWeatherIconSwitch({
+class FogWeatherSwitch extends WeatherIconSwitch {
+  const FogWeatherSwitch({
     Key? key,
-    bool allowConrol = false,
   }) : super(
           key: key,
-          allowConrol: allowConrol,
           weatherIconOn: 'wi-fog',
           weatherIconOff: 'wi-day-sunny',
         );
 
   @override
-  bool _getIsOn(BattleSideState state) {
-    return state.backlineWeather;
+  bool _getIsOn(GameState state) {
+    return state.isFog;
   }
 
   @override
   void _onTap(BuildContext context) {
-    BlocProvider.of<BattleSideBloc>(context).add(ToggleBacklineWeather());
+    BlocProvider.of<GameBloc>(context).add(ToggleFogWeather());
   }
 }
 
-class RainWeatherIconSwitch extends WeatherIconSwitch {
-  const RainWeatherIconSwitch({
+class RainWeatherSwitch extends WeatherIconSwitch {
+  const RainWeatherSwitch({
     Key? key,
-    bool allowConrol = false,
   }) : super(
           key: key,
-          allowConrol: allowConrol,
           weatherIconOn: 'wi-rain',
           weatherIconOff: 'wi-day-sunny',
         );
 
   @override
-  bool _getIsOn(BattleSideState state) {
-    return state.artylineWeather;
+  bool _getIsOn(GameState state) {
+    return state.isRain;
   }
 
   @override
   void _onTap(BuildContext context) {
-    BlocProvider.of<BattleSideBloc>(context).add(ToggleArtylineWeather());
+    BlocProvider.of<GameBloc>(context).add(ToggleRainWeather());
   }
 }

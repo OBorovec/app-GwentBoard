@@ -19,6 +19,7 @@ abstract class PackIconSwitch extends StatelessWidget {
         return ToggleIcon(
           isOn: isOn,
           iconData: iconData,
+          iconSize: 28,
           onTap: () => _onTap(context),
         );
       },
@@ -34,7 +35,7 @@ class MoralIconSwitch extends PackIconSwitch {
   MoralIconSwitch({Key? key})
       : super(
           key: key,
-          iconData: GwentIcons.moral,
+          iconData: GwentIcons.commanderHorn,
         );
 
   @override
@@ -49,7 +50,7 @@ class MoralIconSwitch extends PackIconSwitch {
 }
 
 class GroupIconSwitch extends PackIconSwitch {
-  GroupIconSwitch({Key? key}) : super(key: key, iconData: GwentIcons.group);
+  GroupIconSwitch({Key? key}) : super(key: key, iconData: GwentIcons.muster);
 
   @override
   bool _getIsOn(PackState state) {
@@ -66,7 +67,7 @@ class BrotherIconSwitch extends PackIconSwitch {
   BrotherIconSwitch({Key? key})
       : super(
           key: key,
-          iconData: GwentIcons.brother,
+          iconData: GwentIcons.tightBond,
         );
 
   @override
@@ -84,7 +85,7 @@ class SupportIconSwitch extends PackIconSwitch {
   SupportIconSwitch({Key? key})
       : super(
           key: key,
-          iconData: GwentIcons.support,
+          iconData: GwentIcons.moral,
         );
 
   @override
@@ -102,7 +103,7 @@ class DoubleSupportIconSwitch extends PackIconSwitch {
   DoubleSupportIconSwitch({Key? key})
       : super(
           key: key,
-          iconData: GwentIcons.doubleSupport,
+          iconData: GwentIcons.doubleMoral,
         );
 
   @override

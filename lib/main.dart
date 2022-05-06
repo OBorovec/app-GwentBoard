@@ -1,10 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:gwent_board/app_theme.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gwent_board/constants/app_theme.dart';
 import 'package:gwent_board/route_generator.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  BlocOverrides.runZoned(
+    () => runApp(const MyApp()),
+    blocObserver: AppBlocObserver(),
+  );
+}
+
+class AppBlocObserver extends BlocObserver {
+  @override
+  void onChange(BlocBase bloc, Change change) {
+    super.onChange(bloc, change);
+    print(change);
+  }
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
+    print(transition);
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -20,6 +38,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (settings) => RouteGenerator.generateRoute(
         settings,
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

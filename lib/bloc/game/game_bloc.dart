@@ -25,11 +25,13 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         battleSideBlocA.stream.listen(_onBattleSideBlocAChange);
     _battleSideBlocBSub =
         battleSideBlocB.stream.listen(_onBattleSideBlocBChange);
-    on<ToggleFrostWeather>(_toggleFrostWeather);
+    on<RestartGame>(_onRestartGame);
     on<UpdateScoreA>(_updateScoreA);
     on<UpdateScoreB>(_updateScoreB);
+    on<ToggleFrostWeather>(_toggleFrostWeather);
     on<ToggleFogWeather>(_toggleFogWeather);
     on<ToggleRainWeather>(_toggleRainWeather);
+    on<ScorchCards>(_scorchCards);
   }
 
   void _onBattleSideBlocAChange(BattleSideState battleState) {
@@ -38,6 +40,15 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   void _onBattleSideBlocBChange(BattleSideState battleState) {
     add(UpdateScoreB(newScore: battleState.score));
+  }
+
+  FutureOr<void> _onRestartGame(
+    RestartGame event,
+    Emitter<GameState> emit,
+  ) {
+    battleSideBlocA.add(EmptyBattleSide());
+    battleSideBlocB.add(EmptyBattleSide());
+    emit(const GameState());
   }
 
   FutureOr<void> _updateScoreA(
@@ -82,6 +93,39 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     battleSideBlocA.add(SetArtylineWeather(value: newValue));
     battleSideBlocB.add(SetArtylineWeather(value: newValue));
     emit(state.copyWith(isRain: newValue));
+  }
+
+  FutureOr<void> _scorchCards(
+    ScorchCards event,
+    Emitter<GameState> emit,
+  ) {
+    int highestValue = 0;
+    battleSideBlocA.state.frontlineCards.forEach((card) {
+      if (!card.attHero && card.activeValue! > highestValue)
+        highestValue = card.activeValue!;
+    });
+    battleSideBlocA.state.backlineCards.forEach((card) {
+      if (!card.attHero && card.activeValue! > highestValue)
+        highestValue = card.activeValue!;
+    });
+    battleSideBlocA.state.artylineCards.forEach((card) {
+      if (!card.attHero && card.activeValue! > highestValue)
+        highestValue = card.activeValue!;
+    });
+    battleSideBlocB.state.frontlineCards.forEach((card) {
+      if (!card.attHero && card.activeValue! > highestValue)
+        highestValue = card.activeValue!;
+    });
+    battleSideBlocB.state.backlineCards.forEach((card) {
+      if (!card.attHero && card.activeValue! > highestValue)
+        highestValue = card.activeValue!;
+    });
+    battleSideBlocB.state.artylineCards.forEach((card) {
+      if (!card.attHero && card.activeValue! > highestValue)
+        highestValue = card.activeValue!;
+    });
+    battleSideBlocA.add(DeleteCardsWithValue(value: highestValue));
+    battleSideBlocB.add(DeleteCardsWithValue(value: highestValue));
   }
 
   @override

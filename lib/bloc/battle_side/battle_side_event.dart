@@ -8,6 +8,8 @@ abstract class BattleSideEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class EmptyBattleSide extends BattleSideEvent {}
+
 class CalculateScore extends BattleSideEvent {}
 
 class AddFrontlineCard extends BattleSideEvent {
@@ -90,3 +92,10 @@ class ToggleFrontlineMorale extends BattleSideEvent {}
 class ToggleBacklineMorale extends BattleSideEvent {}
 
 class ToggleArtylineMorale extends BattleSideEvent {}
+
+class DeleteCardsWithValue extends BattleSideEvent {
+  final int value;
+  const DeleteCardsWithValue({
+    required this.value,
+  });
+}

@@ -4,23 +4,23 @@ class CardData extends Equatable {
   final DateTime? initTime;
   final int baseValue;
   final int? activeValue;
-  final bool attGroup;
-  final bool attBrothers;
-  final bool attSupport;
-  final bool attDoubleSupport;
+  final bool attMuster;
+  final bool attTightBond;
   final bool attMoral;
-  final bool attGolden;
+  final bool attDoubleMoral;
+  final bool attCommanderHorn;
+  final bool attHero;
 
   const CardData({
     this.initTime,
     required this.baseValue,
     this.activeValue,
-    this.attGroup = false,
-    this.attBrothers = false,
-    this.attSupport = false,
-    this.attDoubleSupport = false,
+    this.attMuster = false,
+    this.attTightBond = false,
     this.attMoral = false,
-    this.attGolden = false,
+    this.attDoubleMoral = false,
+    this.attCommanderHorn = false,
+    this.attHero = false,
   });
 
   @override
@@ -41,12 +41,12 @@ class CardData extends Equatable {
       initTime: initTime ?? this.initTime,
       baseValue: baseValue ?? this.baseValue,
       activeValue: activeValue ?? this.activeValue,
-      attGroup: attGroup ?? this.attGroup,
-      attBrothers: attBrothers ?? this.attBrothers,
-      attSupport: attSupport ?? this.attSupport,
-      attDoubleSupport: attDoubleSupport ?? this.attDoubleSupport,
-      attMoral: attMoral ?? this.attMoral,
-      attGolden: attGolden ?? this.attGolden,
+      attMuster: attGroup ?? this.attMuster,
+      attTightBond: attBrothers ?? this.attTightBond,
+      attMoral: attSupport ?? this.attMoral,
+      attDoubleMoral: attDoubleSupport ?? this.attDoubleMoral,
+      attCommanderHorn: attMoral ?? this.attCommanderHorn,
+      attHero: attGolden ?? this.attHero,
     );
   }
 }

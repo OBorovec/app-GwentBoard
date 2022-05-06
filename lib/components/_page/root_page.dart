@@ -5,10 +5,12 @@ import 'dart:io';
 
 class RootPage extends StatefulWidget {
   final Widget body;
+  final List<ActionButton> actionButtons;
 
   const RootPage({
     Key? key,
     required this.body,
+    required this.actionButtons,
   }) : super(key: key);
 
   @override
@@ -35,16 +37,7 @@ class _RootPageState extends State<RootPage> {
                 distance: 96.0,
                 alignment: Alignment.center,
                 children: [
-                  ActionButton(
-                    onPressed: () =>
-                        Toasting.notifyToast(context, "Not implemented yet..."),
-                    icon: const Icon(Icons.info),
-                  ),
-                  ActionButton(
-                    onPressed: () =>
-                        Toasting.notifyToast(context, "Not implemented yet..."),
-                    icon: const Icon(Icons.settings),
-                  ),
+                  ...widget.actionButtons,
                   ActionButton(
                     onPressed: () => exit(0),
                     icon: const Icon(Icons.exit_to_app),

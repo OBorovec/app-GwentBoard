@@ -13,7 +13,7 @@ class CardPackWrap extends StatelessWidget {
       builder: (context, state) {
         return Wrap(
           direction: Axis.horizontal,
-          alignment: WrapAlignment.center,
+          alignment: WrapAlignment.spaceEvenly,
           children: (state.normalCards + state.goldCards)
               .map(
                 (CardData cvd) => DraggableCard(data: cvd),

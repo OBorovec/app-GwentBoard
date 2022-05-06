@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gwent_board/constants/colors.dart';
 import 'package:gwent_board/constants/dimensions.dart';
 import 'package:gwent_board/constants/gwent_icons.dart';
 import 'package:gwent_board/model/card_data.dart';
@@ -64,9 +65,9 @@ class BoardCard extends StatelessWidget {
             Radius.circular(5.0),
           ),
           border: Border.all(
-              color: !data.attGolden
+              color: !data.attHero
                   ? Theme.of(context).primaryColorDark
-                  : Colors.yellow.shade700,
+                  : BoardColors.cardTypeGolden,
               width: 2),
         ),
         child: Stack(
@@ -99,20 +100,20 @@ class BoardCard extends StatelessWidget {
   }
 
   Widget _buildCardIcon(BuildContext context) {
+    if (data.attCommanderHorn) {
+      return Icon(GwentIcons.commanderHorn);
+    }
+    if (data.attTightBond) {
+      return Icon(GwentIcons.tightBond);
+    }
+    if (data.attMuster) {
+      return Icon(GwentIcons.muster);
+    }
     if (data.attMoral) {
       return Icon(GwentIcons.moral);
     }
-    if (data.attBrothers) {
-      return Icon(GwentIcons.brother);
-    }
-    if (data.attGroup) {
-      return Icon(GwentIcons.group);
-    }
-    if (data.attSupport) {
-      return Icon(GwentIcons.support);
-    }
-    if (data.attDoubleSupport) {
-      return Icon(GwentIcons.doubleSupport);
+    if (data.attDoubleMoral) {
+      return Icon(GwentIcons.doubleMoral);
     }
     return Container();
   }
@@ -120,10 +121,10 @@ class BoardCard extends StatelessWidget {
   Color? _cardValueColor() {
     if (data.activeValue != null) {
       if (data.activeValue! < data.baseValue) {
-        return Colors.red;
+        return BoardColors.cardValueDebuff;
       }
       if (data.activeValue! > data.baseValue) {
-        return Colors.green;
+        return BoardColors.cardValueBoost;
       }
     }
     return null;

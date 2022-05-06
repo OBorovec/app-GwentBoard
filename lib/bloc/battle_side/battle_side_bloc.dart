@@ -10,6 +10,7 @@ part 'battle_side_state.dart';
 
 class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
   BattleSideBloc() : super(const BattleSideState()) {
+    on<EmptyBattleSide>(_onEmptyBattleSide);
     on<CalculateScore>(_calculateScore);
     on<AddFrontlineCard>(_addFrontlineCard);
     on<AddBacklineCard>(_addBacklineCard);
@@ -26,6 +27,14 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     on<ToggleFrontlineMorale>(_toggleFrontlineMorale);
     on<ToggleBacklineMorale>(_toggleBacklineMorale);
     on<ToggleArtylineMorale>(_toggleArtylineMorale);
+    on<DeleteCardsWithValue>(_deleteCardsWithValue);
+  }
+
+  FutureOr<void> _onEmptyBattleSide(
+    EmptyBattleSide event,
+    Emitter<BattleSideState> emit,
+  ) {
+    emit(const BattleSideState());
   }
 
   FutureOr<void> _calculateScore(
@@ -96,7 +105,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     bool activeMorale,
   ) {
     int value = card.baseValue;
-    if (card.attGolden) {
+    if (card.attHero) {
       return value;
     }
     // Weather affect
@@ -104,10 +113,10 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
       value = 1;
     }
     // Brother cards affect
-    if (card.attBrothers) {
+    if (card.attTightBond) {
       int brothers = 1;
       for (CardData otherCard in otherCards) {
-        if (otherCard.attBrothers && card.baseValue == otherCard.baseValue) {
+        if (otherCard.attTightBond && card.baseValue == otherCard.baseValue) {
           brothers += 1;
         }
       }
@@ -115,13 +124,13 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
     }
     // Support cards affect
     for (CardData otherCard in otherCards) {
-      if (otherCard.attSupport) {
+      if (otherCard.attMoral) {
         value += 1;
       }
     }
     // Double support cards affect
     for (CardData otherCard in otherCards) {
-      if (otherCard.attDoubleSupport) {
+      if (otherCard.attDoubleMoral) {
         value += 2;
       }
     }
@@ -132,7 +141,7 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
       applyMoral = true;
     }
     for (CardData otherCard in otherCards) {
-      if (otherCard.attMoral) {
+      if (otherCard.attCommanderHorn) {
         applyMoral = true;
       }
     }
@@ -300,5 +309,27 @@ class BattleSideBloc extends Bloc<BattleSideEvent, BattleSideState> {
   ) {
     emit(state.copyWith(artylineMorale: !state.artylineMorale));
     add(CalculateScore());
+  }
+
+  FutureOr<void> _deleteCardsWithValue(
+    DeleteCardsWithValue event,
+    Emitter<BattleSideState> emit,
+  ) {
+    List<CardData> frontlineCards = state.frontlineCards
+        .where((CardData cd) => cd.attHero || cd.activeValue! != event.value)
+        .toList();
+    List<CardData> backlineCards = state.backlineCards
+        .where((CardData cd) => cd.attHero || cd.activeValue! != event.value)
+        .toList();
+    List<CardData> artylineCards = state.artylineCards
+        .where((CardData cd) => cd.attHero || cd.activeValue! != event.value)
+        .toList();
+    emit(
+      state.copyWith(
+        frontlineCards: frontlineCards,
+        backlineCards: backlineCards,
+        artylineCards: artylineCards,
+      ),
+    );
   }
 }

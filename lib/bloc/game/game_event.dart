@@ -7,6 +7,8 @@ abstract class GameEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class RestartGame extends GameEvent {}
+
 class UpdateScoreA extends GameEvent {
   final int newScore;
   const UpdateScoreA({
@@ -26,3 +28,5 @@ class ToggleFrostWeather extends GameEvent {}
 class ToggleFogWeather extends GameEvent {}
 
 class ToggleRainWeather extends GameEvent {}
+
+class ScorchCards extends GameEvent {}
